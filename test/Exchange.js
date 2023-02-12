@@ -15,6 +15,7 @@ const tokens = (n) => {
 			const Token = await ethers.getContractFactory('Token')
 
 			token1 = await Token.deploy('Dapp University', 'DAPP', '1000000')
+			token2 = await Token.deploy('Mock Dai', 'mDAI', '1000000')
 
 			accounts = await ethers.getSigners()
 			deployer = accounts[0]
@@ -148,4 +149,35 @@ const tokens = (n) => {
 
 		})
 
+	describe('Making order', async () => {
+		let transaction, result
+
+		describe('Success', async () => {
+			beforeEach(async () => {
+				//Deposit tokens before making order
+
+				// Approve Token
+				transaction = await token1.connect(user1).approve(exchange.address, amount)
+				result = await transaction.wait()
+				// Deposit Token
+				transaction = await exchange.connect(user1).depositToken(token1.address, amount)
+				result = await transaction.wait()
+
+				// Make order
+				transaction = await exchange.connect(user1).makeOrder(token2.address, tokens(1), token1.address, tokens(1))
+			})
+
+			it('tracks the newly created order', async () => {
+				expect(await exchange.orderExchange()).to.be.equal(1)
+			})
+		})
+
+		describe('Failure', async () => {
+
 	})
+})
+
+
+
+
+

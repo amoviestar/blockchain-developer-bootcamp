@@ -8,6 +8,8 @@ contract Exchange {
 	address public feeAccount;
 	uint256 public feePercent;
 	mapping(address => mapping(address => uint256)) public tokens;
+	mapping(uint256 => _Order) public orders;
+	uint256 public ordersCount;
 
 	event Deposit(address token, address user, uint256 amount, uint256 balance);
 	event Withdraw(
@@ -16,6 +18,17 @@ contract Exchange {
 		uint256 amount,
 		uint256 balance
 	);
+
+	struct _Order {
+		// Attributes of an order
+		uint256 id; // Unique identifier for order
+		address user; // User who made order
+		address tokenGet;  // Address of the token they receive
+		uint256 amountGet;  // Amount they receive
+		address tokenGive;  // Address of token they give
+		uint256 amountGive;  // Amount they give
+		uint256 timestamp;  // When order was created
+	}
 
 	constructor(address _feeAccount, uint256 _feePercent) {
 		feeAccount = _feeAccount;
@@ -40,7 +53,7 @@ contract Exchange {
 	function withdrawToken(address _token, uint256 _amount) public {
 		// Ensure user has enough tokens to withdraw
 		require(tokens[_token][msg.sender] >= _amount);
-		
+
 		// Transfer tokens to user
 		Token(_token).transfer(msg.sender, _amount);
 
@@ -59,4 +72,42 @@ contract Exchange {
 		return tokens[_token][_user];
 	}
 
+
+	// --------------------
+	// MAKE & CANCEL ORDERS
+	function makeOrder(
+		address _tokenGet,
+		uint256 _amountGet,
+		address _tokenGive,
+		address _amountGive
+	) public {
+
+		// uint256 id; // Unique identifier for order
+		// address user; // User who made order
+		// address tokenGet;  // Address of the token they receive
+		// uint256 amountGet;  // Amount they receive
+		// address tokenGive;  // Address of token they give
+		// uint256 amountGive;  // Amount they give
+		// uint256 timestamp;
+
+		ordersCount = ordersCount + 1;
+
+		orders[orderCount] = _Order(
+			ordersCount, // id 1,2,3 etc
+			msg.sender,  // user
+			_tokenGet,  // tokenGet
+			_amountGet,  // amountGet
+			_tokenGive,  // tokenGive
+			_amountGive,  // amountGive
+			block.timestamp  // timestamp
+		);
+	}
+
+
+
+
 }
+
+
+
+
