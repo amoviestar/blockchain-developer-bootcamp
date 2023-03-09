@@ -192,8 +192,6 @@ contract Exchange {
 			_order.amountGet,
 			_order.tokenGive,
 			_order.amountGive
-
-
 		);
 	
 		// Mark order as filled

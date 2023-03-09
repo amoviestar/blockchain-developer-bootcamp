@@ -104,7 +104,7 @@ async function main() {
   await wait(1)
 
   // User 1 makes another order
-  transaction = await exchange.connect(user1).makeOrder(mETH.address, tokens(50), DApp.address, tokens(15))
+  transaction = await exchange.makeOrder(mETH.address, tokens(50), DApp.address, tokens(15))  //// MISTAKE: deleted connect(user1)
   result = await transaction.wait()
   console.log(`Made order from ${user1.address}`)
 
@@ -118,7 +118,7 @@ async function main() {
   await wait(1)
 
   // User 1 makes final order
-  transaction = await exchange.connect(user1).makeOrder(mETH.address, tokens(220), DApp.address, tokens(20))
+  transaction = await exchange.connect(user1).makeOrder(mETH.address, tokens(200), DApp.address, tokens(20)) //** MISTAKE 220 should be 200 (have changed it)
   result = await transaction.wait()
   console.log(`Made order from ${user1.address}`)
 
@@ -136,7 +136,7 @@ async function main() {
   //
 
   // User 1 makes 10 orders
-  for(let i =1; i <= 10; i++){
+  for(let i = 1; i <= 10; i++) {  //space in between =1
     transaction = await exchange.connect(user1).makeOrder(mETH.address, tokens(10 * i), DApp.address, tokens(10))
     result = await transaction.wait()
 
@@ -147,7 +147,7 @@ async function main() {
   }
 
   // User 2 makes 10 orders
-  for(let i =1; i <= 10; i++){
+  for(let i = 1; i <= 10; i++) {   //space in between =1
     transaction = await exchange.connect(user2).makeOrder(DApp.address, tokens(10), mETH.address, tokens(10 * 1))
     result = await transaction.wait()
 
